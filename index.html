@@ -49,6 +49,78 @@
   --max-width: 920px;
 }
 
+/* ===== Keyframes ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pulseNode {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(79,70,229,0); }
+}
+@keyframes timelineBarShine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 0% 100%; }
+}
+@keyframes floatGeom {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-6px) rotate(2deg); }
+  66%      { transform: translateY(2px) rotate(-1deg); }
+}
+@keyframes bannerCountPop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Scroll Reveal ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ===== Geometric Background Decorations ===== */
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -2;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 30%, rgba(99,102,241,0.025) 0%, transparent 50%),
+    radial-gradient(circle at 85% 65%, rgba(217,119,6,0.02) 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, rgba(5,150,105,0.02) 0%, transparent 50%);
+}
+.geom-dots {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(99,102,241,0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.35;
+}
+.geom-grid {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.4;
+}
+
 /* ===== Reset & Base ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
@@ -108,7 +180,7 @@ section:nth-child(even) { background: transparent; }
 
 /* ===== Hero ===== */
 #hero {
-  padding-top: 140px; padding-bottom: 80px; text-align: center;
+  padding-top: 140px; padding-bottom: 56px; text-align: center;
   position: relative; overflow: hidden;
   background: linear-gradient(180deg, #eef2ff 0%, #f9fafb 40%, #f9fafb 100%);
 }
@@ -116,7 +188,7 @@ section:nth-child(even) { background: transparent; }
   content: '';
   position: absolute; top: -180px; left: 50%; transform: translateX(-50%);
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -124,7 +196,7 @@ section:nth-child(even) { background: transparent; }
   content: '';
   position: absolute; bottom: -60px; right: -120px;
   width: 360px; height: 360px;
-  background: radial-gradient(circle, rgba(99,102,241,0.04) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -138,11 +210,28 @@ section:nth-child(even) { background: transparent; }
 .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 #hero h1 {
   font-size: 46px; font-weight: 800; color: var(--color-heading);
-  margin-bottom: 8px; letter-spacing: 1px; position: relative; z-index: 2;
+  margin-bottom: 6px; letter-spacing: 1px; position: relative; z-index: 2;
 }
 #hero .tagline {
-  font-size: 17px; color: var(--color-text-dim); margin-bottom: 24px;
+  font-size: 17px; color: var(--color-text-dim); margin-bottom: 14px;
   font-weight: 400; position: relative; z-index: 2;
+}
+#hero .brand-slogan {
+  font-size: 15px; font-weight: 500;
+  color: var(--accent); margin-bottom: 22px;
+  position: relative; z-index: 2;
+  letter-spacing: 0.5px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+#hero .brand-slogan::before,
+#hero .brand-slogan::after {
+  content: ''; display: block;
+  width: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-light));
+  opacity: 0.5;
+}
+#hero .brand-slogan::after {
+  background: linear-gradient(90deg, var(--accent-light), transparent);
 }
 #hero .contact-row {
   display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
@@ -163,6 +252,46 @@ section:nth-child(even) { background: transparent; }
   box-shadow: var(--shadow-sm);
 }
 #hero .contact-icon { font-size: 15px; }
+
+/* ===== Data Highlight Banner ===== */
+.data-banner {
+  max-width: var(--max-width); margin: -20px auto 0; padding: 0 24px;
+  position: relative; z-index: 3;
+}
+.data-banner-inner {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  display: flex; justify-content: center; gap: 0;
+  flex-wrap: wrap;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+}
+.data-stat {
+  flex: 1; min-width: 120px; text-align: center; padding: 8px 20px;
+  position: relative;
+}
+.data-stat:not(:last-child)::after {
+  content: ''; position: absolute; right: 0; top: 20%; bottom: 20%;
+  width: 1px; background: linear-gradient(180deg, transparent, var(--color-border), transparent);
+}
+.data-stat .stat-number {
+  font-size: 38px; font-weight: 800; color: var(--accent);
+  line-height: 1.1; letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.data-stat .stat-label {
+  font-size: 12px; color: var(--color-text-muted);
+  margin-top: 4px; font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.data-stat .stat-icon {
+  display: block; font-size: 20px; margin-bottom: 2px;
+}
 
 /* ===== Section Titles ===== */
 .section-title {
@@ -203,28 +332,85 @@ section:nth-child(even) { background: transparent; }
   font-size: 15px; color: var(--color-heading); font-weight: 600;
 }
 
-/* ===== Timeline ===== */
-.timeline { position: relative; padding-left: 32px; }
+/* ===== Core Advantage Cards ===== */
+.advantage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+}
+.advantage-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px 18px;
+  text-align: center;
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-base);
+  position: relative; overflow: hidden;
+}
+.advantage-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+  opacity: 0; transition: opacity var(--transition-base);
+}
+.advantage-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  border-color: var(--color-border);
+}
+.advantage-card:hover::before { opacity: 1; }
+.advantage-card .adv-icon {
+  width: 48px; height: 48px; border-radius: var(--radius-md);
+  margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.adv-card-1 .adv-icon { background: #eef2ff; color: #4f46e5; }
+.adv-card-2 .adv-icon { background: #ecfdf5; color: #059669; }
+.adv-card-3 .adv-icon { background: #fffbeb; color: #d97706; }
+.adv-card-4 .adv-icon { background: #fdf2f8; color: #db2777; }
+.advantage-card h3 { font-size: 15px; color: var(--color-heading); font-weight: 700; margin-bottom: 6px; }
+.advantage-card p { font-size: 13px; color: var(--color-text-dim); line-height: 1.7; }
+
+/* ===== Timeline Enhanced ===== */
+.timeline { position: relative; padding-left: 36px; }
 .timeline::before {
   content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px;
-  width: 2px; background: linear-gradient(180deg, var(--accent-light), var(--color-border), var(--color-border));
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-light), var(--accent), var(--color-border), var(--color-border-light));
+  background-size: 100% 200%;
+  animation: timelineBarShine 4s ease infinite;
   border-radius: 1px;
 }
 .timeline-item {
-  position: relative; margin-bottom: 36px; padding-bottom: 4px;
+  position: relative; margin-bottom: 40px; padding-bottom: 4px;
 }
 .timeline-item:last-child { margin-bottom: 0; }
 .timeline-item::before {
-  content: ''; position: absolute; left: -28px; top: 6px;
+  content: ''; position: absolute; left: -32px; top: 6px;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--color-surface);
   border: 3px solid var(--accent);
   box-shadow: 0 0 0 4px var(--accent-bg);
   transition: all var(--transition-fast);
+  z-index: 1;
 }
 .timeline-item:hover::before {
   border-color: var(--accent-dark);
   box-shadow: 0 0 0 6px var(--accent-bg-hover);
+  animation: pulseNode 1.6s ease infinite;
+}
+.timeline-item .timeline-icon {
+  position: absolute; left: -38px; top: 2px;
+  font-size: 10px; color: #fff; z-index: 2;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition-base);
+  opacity: 0; transform: scale(0.5);
+}
+.timeline-item:hover .timeline-icon {
+  opacity: 1; transform: scale(1);
 }
 .timeline-item h3 { font-size: 17px; color: var(--color-heading); font-weight: 700; margin-bottom: 4px; }
 .timeline-item .meta {
@@ -288,6 +474,23 @@ section:nth-child(even) { background: transparent; }
 }
 .card p { font-size: 14px; color: var(--color-text); line-height: 1.85; margin-top: 4px; }
 
+/* Paper Summary Banner */
+.paper-summary {
+  background: linear-gradient(135deg, #eef2ff 0%, #f8faff 50%, #fefce8 100%);
+  border-radius: var(--radius-lg); padding: 22px 28px;
+  border: 1px solid #c7d2fe;
+  margin-bottom: 20px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.paper-summary .summary-icon {
+  font-size: 32px; flex-shrink: 0;
+}
+.paper-summary .summary-text {
+  font-size: 14px; color: var(--color-text); line-height: 1.8;
+  font-weight: 500;
+}
+.paper-summary .summary-text strong { color: var(--accent-dark); }
+
 /* ===== Highlight Box ===== */
 .highlight-box {
   background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
@@ -320,8 +523,8 @@ section:nth-child(even) { background: transparent; }
   border-top: 1px solid var(--color-border-light);
 }
 
-/* ===== Skills Grid ===== */
-.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+/* ===== Skills Visualization ===== */
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .skill-cat {
   background: var(--color-surface);
   border: 1px solid var(--color-border-light);
@@ -339,13 +542,51 @@ section:nth-child(even) { background: transparent; }
 .skill-cat:nth-child(2) .cat-icon { background: #ecfdf5; color: #059669; }
 .skill-cat:nth-child(3) .cat-icon { background: #fffbeb; color: #d97706; }
 .skill-cat h3 { font-size: 15px; color: var(--color-heading); font-weight: 700; }
-.skill-cat .tag {
-  display: inline-block; background: var(--color-surface-alt);
-  color: var(--color-text); font-size: 12px; padding: 5px 12px;
-  border-radius: var(--radius-sm); margin: 3px;
-  font-weight: 500; transition: all var(--transition-fast);
+
+/* Skill Bars */
+.skill-bar-wrap {
+  display: flex; flex-direction: column; gap: 10px;
 }
-.skill-cat .tag:hover { background: #e2e8f0; color: var(--color-heading); }
+.skill-bar-item {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.skill-bar-item .skill-bar-label {
+  font-size: 12px; color: var(--color-text); font-weight: 500;
+  display: flex; justify-content: space-between;
+}
+.skill-bar-item .skill-bar-label .skill-level {
+  color: var(--accent); font-size: 11px; font-weight: 600;
+}
+.skill-bar-track {
+  height: 6px; border-radius: 3px; background: var(--color-surface-alt);
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.skill-bar-fill.color-green {
+  background: linear-gradient(90deg, #34d399, var(--green));
+}
+.skill-bar-fill.color-warm {
+  background: linear-gradient(90deg, #fbbf24, var(--warm));
+}
+
+/* Certificate badges in skills */
+.cert-badges {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cert-badge-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--color-text); font-weight: 500;
+  padding: 6px 10px; background: var(--color-surface-alt);
+  border-radius: var(--radius-sm); transition: all var(--transition-fast);
+}
+.cert-badge-item:hover { background: #e2e8f0; color: var(--color-heading); }
+.cert-badge-item .cert-check {
+  color: var(--green); font-size: 14px; flex-shrink: 0;
+}
 
 /* ===== Honor List ===== */
 .honor-list { list-style: none; }
@@ -364,25 +605,47 @@ section:nth-child(even) { background: transparent; }
   font-size: 14px; flex-shrink: 0;
 }
 
-/* ===== Footer ===== */
+/* ===== Footer Branded ===== */
 footer {
-  text-align: center; padding: 56px 24px;
-  background: var(--color-surface-alt);
+  text-align: center; padding: 64px 24px;
+  background: linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
   border-top: 1px solid var(--color-border-light);
+  position: relative; overflow: hidden;
+}
+footer::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
 }
 footer .footer-brand {
-  font-size: 18px; font-weight: 700; color: var(--color-heading);
-  margin-bottom: 6px; letter-spacing: 0.5px;
+  font-size: 20px; font-weight: 700; color: var(--color-heading);
+  margin-bottom: 4px; letter-spacing: 0.5px;
+}
+footer .footer-slogan {
+  font-size: 14px; color: var(--accent); margin-bottom: 20px;
+  font-weight: 500; letter-spacing: 0.5px;
+  font-style: italic;
 }
 footer .footer-sub {
-  font-size: 13px; color: var(--color-text-muted); margin-bottom: 16px;
+  font-size: 13px; color: var(--color-text-muted); margin-bottom: 8px;
 }
-footer .sig img { height: 30px; opacity: 0.45; transition: opacity var(--transition-fast); }
-footer .sig img:hover { opacity: 0.7; }
 footer .footer-divider {
-  width: 40px; height: 2px; background: var(--accent-light);
-  margin: 20px auto; border-radius: 1px; opacity: 0.5;
+  width: 60px; height: 2px; margin: 24px auto;
+  background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+  border-radius: 1px; opacity: 0.5;
 }
+footer .footer-links {
+  display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+footer .footer-links a {
+  text-decoration: none; color: var(--color-text-dim);
+  font-size: 13px; font-weight: 500;
+  transition: color var(--transition-fast);
+}
+footer .footer-links a:hover { color: var(--accent); }
+footer .sig img { height: 28px; opacity: 0.35; transition: opacity var(--transition-fast); }
+footer .sig img:hover { opacity: 0.65; }
 
 /* ===== Self-evaluation Card ===== */
 .self-eval-card {
@@ -394,37 +657,65 @@ footer .footer-divider {
 .self-eval-card h3 { font-size: 16px; color: var(--color-heading); margin-bottom: 12px; font-weight: 700; }
 .self-eval-card p { font-size: 14px; color: var(--color-text); line-height: 1.9; }
 
+/* ===== Floating geom elements (Hero only) ===== */
+.hero-geom-1, .hero-geom-2 {
+  position: absolute; pointer-events: none; z-index: 0;
+  border-radius: 50%; opacity: 0.04;
+  background: var(--accent);
+  animation: floatGeom 8s ease-in-out infinite;
+}
+.hero-geom-1 { width: 180px; height: 180px; top: 60px; left: 10%; animation-delay: 0s; }
+.hero-geom-2 { width: 100px; height: 100px; bottom: 40px; right: 8%; animation-delay: -4s; opacity: 0.05; }
+
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
   nav .nav-inner { padding: 0 16px; }
   nav ul { gap: 0; }
   nav a { padding: 5px 10px; font-size: 12px; }
-  #hero { padding-top: 120px; padding-bottom: 60px; }
+  #hero { padding-top: 120px; padding-bottom: 40px; }
   #hero h1 { font-size: 34px; }
   #hero .tagline { font-size: 15px; }
+  #hero .brand-slogan { font-size: 13px; }
+  #hero .brand-slogan::before,
+  #hero .brand-slogan::after { width: 18px; }
+  .data-banner { margin: -12px auto 0; }
+  .data-banner-inner { padding: 20px 12px; }
+  .data-stat { min-width: 80px; padding: 8px 12px; }
+  .data-stat .stat-number { font-size: 28px; }
+  .data-stat .stat-label { font-size: 10px; }
+  .data-stat:not(:last-child)::after { display: none; }
   .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .advantage-grid { grid-template-columns: repeat(2, 1fr); }
   .skills-grid { grid-template-columns: 1fr; }
   .cert-card { width: 100%; }
   section { padding: 56px 16px; }
   .section-title { font-size: 20px; }
   .card { padding: 20px; }
+  .paper-summary { padding: 16px 20px; }
 }
 
 @media (max-width: 480px) {
   #hero h1 { font-size: 28px; }
-  #hero { padding-top: 110px; padding-bottom: 48px; }
+  #hero { padding-top: 110px; padding-bottom: 36px; }
   .avatar-wrap { width: 100px; height: 100px; }
   .info-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   .info-item { padding: 14px 12px; }
   .info-item .value { font-size: 14px; }
+  .advantage-grid { grid-template-columns: 1fr; }
   .section-title { font-size: 18px; }
   .card h3 { font-size: 15px; }
-  .timeline { padding-left: 24px; }
-  .timeline-item::before { left: -20px; width: 12px; height: 12px; }
+  .timeline { padding-left: 28px; }
+  .timeline-item::before { left: -24px; width: 12px; height: 12px; }
+  .timeline-item .timeline-icon { left: -30px; width: 22px; height: 22px; font-size: 9px; }
+  .data-stat { min-width: 70px; padding: 6px 8px; }
+  .data-stat .stat-number { font-size: 24px; }
 }
 </style>
 </head>
 <body>
+
+<div class="geom-dots"></div>
+<div class="geom-grid"></div>
 
 <nav id="navbar">
   <div class="nav-inner">
@@ -443,9 +734,12 @@ footer .footer-divider {
 </nav>
 
 <section id="hero">
+  <div class="hero-geom-1"></div>
+  <div class="hero-geom-2"></div>
   <div class="avatar-wrap"><img src="avatar.png" alt="庆达"></div>
   <h1>庆达</h1>
   <p class="tagline">材料科学与工程 工学硕士&ensp;·&ensp;新能源材料研发工程师</p>
+  <p class="brand-slogan">以材料科学驱动绿色能源未来</p>
   <div class="contact-row">
     <a class="contact-pill" href="mailto:2371267598@qq.com"><span class="contact-icon">&#9993;</span> 2371267598@qq.com</a>
     <span class="contact-pill"><span class="contact-icon">&#9742;</span> 14747224629</span>
@@ -453,9 +747,40 @@ footer .footer-divider {
   </div>
 </section>
 
+<!-- Data Highlight Banner -->
+<div class="data-banner">
+  <div class="data-banner-inner">
+    <div class="data-stat">
+      <span class="stat-icon">&#128218;</span>
+      <div class="stat-number">7</div>
+      <div class="stat-label">篇论文发表</div>
+    </div>
+    <div class="data-stat">
+      <span class="stat-icon">&#128300;</span>
+      <div class="stat-number">5</div>
+      <div class="stat-label">项科研项目</div>
+    </div>
+    <div class="data-stat">
+      <span class="stat-icon">&#128269;</span>
+      <div class="stat-number">6</div>
+      <div class="stat-label">项分析表征技能</div>
+    </div>
+    <div class="data-stat">
+      <span class="stat-icon">&#127775;</span>
+      <div class="stat-number">SCI</div>
+      <div class="stat-label">一区发表</div>
+    </div>
+    <div class="data-stat">
+      <span class="stat-icon">&#127891;</span>
+      <div class="stat-number">3年</div>
+      <div class="stat-label">硕博贯通培养</div>
+    </div>
+  </div>
+</div>
+
 <section id="about">
   <h2 class="section-title">关于我</h2>
-  <div class="info-grid">
+  <div class="info-grid reveal">
     <div class="info-item"><div class="label">姓名</div><div class="value">庆达</div></div>
     <div class="info-item"><div class="label">民族</div><div class="value">蒙古族</div></div>
     <div class="info-item"><div class="label">出生年月</div><div class="value">1999年3月</div></div>
@@ -465,17 +790,43 @@ footer .footer-divider {
     <div class="info-item"><div class="label">专业</div><div class="value">材料科学与工程</div></div>
     <div class="info-item"><div class="label">现职单位</div><div class="value">唐山国亮新能源研究院</div></div>
   </div>
+
+  <!-- Core Advantage Cards -->
+  <div class="advantage-grid reveal reveal-delay-1">
+    <div class="advantage-card adv-card-1">
+      <div class="adv-icon">&#128218;</div>
+      <h3>扎实的科研功底</h3>
+      <p>系统掌握材料现代研究方法，深入理解光电化学阴极保护机理</p>
+    </div>
+    <div class="advantage-card adv-card-2">
+      <div class="adv-icon">&#128300;</div>
+      <h3>独立实验设计</h3>
+      <p>能独立完成实验方案设计、数据采集分析与报告撰写全流程</p>
+    </div>
+    <div class="advantage-card adv-card-3">
+      <div class="adv-icon">&#9881;</div>
+      <h3>多领域研发经验</h3>
+      <p>涵盖硅树脂、匣钵、铁尾矿利用等多个无机非金属材料方向</p>
+    </div>
+    <div class="advantage-card adv-card-4">
+      <div class="adv-icon">&#127775;</div>
+      <h3>高质量论文产出</h3>
+      <p>发表论文7篇，含SCI一区、EI、北大核心/CSCD等高水平期刊</p>
+    </div>
+  </div>
 </section>
 
 <section id="education">
   <h2 class="section-title">教育经历</h2>
-  <div class="timeline">
+  <div class="timeline reveal">
     <div class="timeline-item">
+      <div class="timeline-icon">&#127891;</div>
       <h3>华北理工大学 — 材料科学与工程 工学硕士</h3>
       <div class="meta">2021.09 – 2024.06</div>
       <p>主修：材料现代研究方法、结构化学、数理统计、计算方法、高分子材料物理与性能。研究方向为光电化学阴极保护，发表 SCI/EI/核心论文 6 篇，其中第一作者 4 篇。获一等、二等、三等学业奖学金。</p>
     </div>
     <div class="timeline-item">
+      <div class="timeline-icon">&#127891;</div>
       <h3>华北理工大学 — 材料化学 学士</h3>
       <div class="meta">2017.09 – 2021.06</div>
       <p>主修：高分子材料、材料测试方法、材料科学基础、水泥工艺原理、耐火工艺原理、金属工艺原理、物理化学、有机化学、无机化学、高分子化学、材料工程基础、功能材料等。毕业论文：碱溶活化铁尾矿制备地聚合物的研究。</p>
@@ -485,7 +836,7 @@ footer .footer-divider {
 
 <section id="certs">
   <h2 class="section-title">学历证书</h2>
-  <div class="cert-gallery">
+  <div class="cert-gallery reveal">
     <div class="cert-card">
       <img src="degree_cert.jpg" alt="硕士学位证书">
       <div class="caption">工学硕士学位证书</div>
@@ -499,7 +850,7 @@ footer .footer-divider {
 
 <section id="work">
   <h2 class="section-title">工作经历</h2>
-  <div class="highlight-box">
+  <div class="highlight-box reveal">
     <h3>唐山国亮新能源研究院有限公司</h3>
     <div class="meta">2024年6月 — 至今 &nbsp;|&nbsp; 新能源材料研发</div>
     <p>从事无机非金属材料研发工作，涵盖硅树脂结合剂实验、匣钵材料研究、铁尾矿综合利用等方向。负责实验方案设计、数据采集分析（XRD、SEM、FT-IR等）、实验报告撰写及月度总结汇报，具备独立实验设计与数据分析能力。</p>
@@ -509,7 +860,7 @@ footer .footer-divider {
 <section id="research">
   <h2 class="section-title">科研与项目经历</h2>
 
-  <div class="card">
+  <div class="card reveal">
     <h3>钛酸锶光阳极设计制备及对金属腐蚀防护的研究</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">河北省自然科学基金</span>
@@ -518,7 +869,7 @@ footer .footer-divider {
     <p>参与导师主持的河北省自然科学基金高端钢铁冶金联合基金项目（1011101）。主要负责材料制备，探究催化剂和膜制备工艺对物化性能的影响。涉及 SrTiO&#8323;/BaTiO&#8323; 复合薄膜的制备、氮梯度掺杂、ZIF-67 复合等方向，系统研究了光电流密度、开路电位、极化曲线等电化学性能。</p>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-1">
     <h3>氮梯度掺杂钛酸锶复合钛酸钡光电化学阴极保护性能研究</h3>
     <div class="meta-row">
       <span class="badge badge-tag">研究生课题</span>
@@ -526,7 +877,7 @@ footer .footer-divider {
     <p>将 SrTiO&#8323; 催化剂负载到 FTO 玻璃上制备光阳极，与 304 不锈钢耦合保护其不被水氧化腐蚀。系统探究催化剂最佳合成工艺、前驱体喷涂参数（不同厚度/喷涂次数）对膜性能的影响，以及最佳负载方法。相关成果发表于 Ceramics International（SCI 一区）和复合材料学报（EI）。</p>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <h3>铁尾矿资源化利用研究</h3>
     <div class="meta-row">
       <span class="badge badge-tag">本科论文 + 工作延续</span>
@@ -534,7 +885,7 @@ footer .footer-divider {
     <p>本科阶段：碱溶活化铁尾矿制备地聚合物，探究不同浓度碱溶液对铁尾矿的碱溶作用，制备抗压抗折强度高的地聚合物砖体。工作阶段：参与铁尾矿制备 UHPC（超高性能混凝土）研究，以及低品位高铁矾土矿开采尾矿生产高铝电熔料技术研究项目。</p>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <h3>油性降凝物质的制备及降凝性能研究</h3>
     <div class="meta-row">
       <span class="badge badge-tag">校企合作项目</span>
@@ -542,7 +893,7 @@ footer .footer-divider {
     <p>研究常温下通过添加降凝剂改善钢厂油泥流动性，系统研究降凝物质掺杂比例对油泥粘度的影响规律。</p>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-4">
     <h3>硅树脂结合剂实验（工作项目）</h3>
     <div class="meta-row">
       <span class="badge badge-tag">企业研发</span>
@@ -554,7 +905,13 @@ footer .footer-divider {
 <section id="papers">
   <h2 class="section-title">论文发表</h2>
 
-  <div class="card">
+  <!-- Paper Impact Summary -->
+  <div class="paper-summary reveal">
+    <span class="summary-icon">&#128218;</span>
+    <span class="summary-text">累计发表论文 <strong>7篇</strong>，其中 <strong>SCI 一区 1篇</strong>、<strong>SCI 四区 1篇</strong>、<strong>SCI 1篇</strong>、<strong>EI 1篇</strong>、<strong>北大核心/CSCD 3篇</strong>。以第一作者身份发表 <strong>4篇</strong>，第二作者 <strong>3篇</strong>。</span>
+  </div>
+
+  <div class="card reveal">
     <h3>BaTiO&#8323;/SrTiO&#8323; 复合薄膜的制备及其光电化学阴极保护性能</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">EI</span>
@@ -563,7 +920,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-1">
     <h3>Controlled synthesis of various SrTiO&#8323; morphology and their effects on photoelectrically cathodic protection performance</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">SCI 一区</span>
@@ -572,7 +929,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-1">
     <h3>金属有机框架材料的制备及应用研究进展</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">北大核心 / CSCD</span>
@@ -581,7 +938,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <h3>梯度掺杂半导体材料光催化研究进展</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">北大核心 / CSCD</span>
@@ -590,7 +947,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <h3>钛酸钡薄膜的制备及压电光催化应用研究进展</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">北大核心 / CSCD</span>
@@ -599,7 +956,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <h3>Construction of Novel Type-II SrTiO&#8323;/g-C&#8323;N&#8324; Heterojunction Photocatalysts</h3>
     <div class="meta-row">
       <span class="badge badge-journal-mid">SCI 四区</span>
@@ -608,7 +965,7 @@ footer .footer-divider {
     </div>
   </div>
 
-  <div class="card">
+  <div class="card reveal reveal-delay-4">
     <h3>Gradient N-doping SrTiO&#8323; photoanode with enhanced photoelectrochemical corrosion protection performance for 304 stainless steel</h3>
     <div class="meta-row">
       <span class="badge badge-journal-high">SCI</span>
@@ -620,35 +977,89 @@ footer .footer-divider {
 
 <section id="skills">
   <h2 class="section-title">专业技能</h2>
-  <div class="skills-grid">
+  <div class="skills-grid reveal">
     <div class="skill-cat">
       <div class="cat-header">
         <div class="cat-icon">&#9883;</div>
         <h3>材料分析表征</h3>
       </div>
-      <span class="tag">XRD</span><span class="tag">FT-IR</span><span class="tag">SEM</span><span class="tag">EDS</span><span class="tag">UV-vis</span>
-      <span class="tag">PL</span><span class="tag">电化学测试</span><span class="tag">极化曲线</span><span class="tag">光电流测试</span>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>XRD 物相分析</span><span class="skill-level">精通</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>SEM/EDS 形貌分析</span><span class="skill-level">精通</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>FT-IR 红外光谱</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>UV-vis / PL 光谱</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>电化学测试</span><span class="skill-level">精通</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:92%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>极化曲线 / 光电流测试</span><span class="skill-level">精通</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
+      </div>
     </div>
     <div class="skill-cat">
       <div class="cat-header">
         <div class="cat-icon">&#9000;</div>
         <h3>软件工具</h3>
       </div>
-      <span class="tag">Origin</span><span class="tag">Photoshop</span><span class="tag">Cinema 4D</span><span class="tag">Diamond</span>
-      <span class="tag">ChemDraw</span><span class="tag">OMINIC</span><span class="tag">Office</span><span class="tag">AutoCAD</span>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>Origin 数据绘图</span><span class="skill-level">精通</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:95%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>ChemDraw</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:78%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>Photoshop</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:75%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>Cinema 4D / Diamond</span><span class="skill-level">掌握</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:65%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>OMINIC</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:72%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-label"><span>Office / AutoCAD</span><span class="skill-level">熟练</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill color-green" style="width:80%"></div></div>
+        </div>
+      </div>
     </div>
     <div class="skill-cat">
       <div class="cat-header">
         <div class="cat-icon">&#9733;</div>
         <h3>证书资质</h3>
       </div>
-      <span class="tag">全国计算机二级</span><span class="tag">英语四级 CET-4</span><span class="tag">普通话二级乙等</span><span class="tag">工学硕士学位</span>
+      <div class="cert-badges">
+        <div class="cert-badge-item"><span class="cert-check">&#10003;</span> 全国计算机二级</div>
+        <div class="cert-badge-item"><span class="cert-check">&#10003;</span> 英语四级 CET-4</div>
+        <div class="cert-badge-item"><span class="cert-check">&#10003;</span> 普通话二级乙等</div>
+        <div class="cert-badge-item"><span class="cert-check">&#10003;</span> 工学硕士学位</div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="honors">
   <h2 class="section-title">荣誉与评价</h2>
+  <div class="reveal">
   <ul class="honor-list">
     <li><span class="honor-icon">&#127942;</span> 一等学业奖学金、二等学业奖学金、三等学业奖学金</li>
     <li><span class="honor-icon">&#127942;</span> 2017-2020 连续三年"社会实践先进个人"</li>
@@ -658,14 +1069,23 @@ footer .footer-divider {
     <h3>自我评价</h3>
     <p>具有扎实的材料科学与工程专业知识，硕士期间以第一作者发表 EI/核心论文 4 篇，参与省自然科学基金项目，具备独立实验设计与数据分析能力。工作后在企业研发岗位积累了无机非金属材料实践经验，涵盖硅树脂、匣钵、铁尾矿等多个方向。善于学习新软件和技能，乐于接纳新事物，具有较强的逻辑思维能力和团队协作能力。性格沉稳冷静，能适应各种工作环境，有较强的抗压能力。</p>
   </div>
+  </div>
 </section>
 
 <footer>
   <div class="footer-brand">庆达</div>
-  <p class="footer-sub">材料科学与工程 工学硕士&ensp;·&ensp;新能源材料研发</p>
+  <p class="footer-slogan">以材料科学驱动绿色能源未来</p>
+  <p class="footer-sub">材料科学与工程 工学硕士&ensp;·&ensp;新能源材料研发工程师</p>
   <div class="footer-divider"></div>
+  <div class="footer-links">
+    <a href="#hero">首页</a>
+    <a href="#about">关于我</a>
+    <a href="#papers">论文</a>
+    <a href="#skills">技能</a>
+    <a href="mailto:2371267598@qq.com">联系邮箱</a>
+  </div>
   <p style="font-size:12px;color:var(--color-text-muted);">华北理工大学 &nbsp;|&nbsp; 唐山国亮新能源研究院有限公司</p>
-  <div class="sig"><img src="signature_1.png" alt="签名"></div>
+  <div class="sig" style="margin-top:16px;"><img src="signature_1.png" alt="签名"></div>
 </footer>
 
 <script>
@@ -687,6 +1107,19 @@ footer .footer-divider {
     });
     links.forEach(function(a) { a.classList.remove('nav-active'); });
     if (current) current.link.classList.add('nav-active');
+  });
+
+  // Scroll Reveal Observer
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
   });
 })();
 </script>
