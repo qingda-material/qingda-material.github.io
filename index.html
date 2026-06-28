@@ -3,89 +3,453 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>庆达 - 个人主页</title>
+<title>庆达 — 材料科学与工程 工学硕士</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #f8f9fa; color: #334155; line-height: 1.85; }
-nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
-nav ul { display: flex; justify-content: center; list-style: none; padding: 16px 0; flex-wrap: wrap; }
-nav li { margin: 0 16px; }
-nav a { text-decoration: none; color: #64748b; font-size: 13px; font-weight: 500; transition: color 0.3s; letter-spacing: 0.5px; }
-nav a:hover { color: #2563eb; }
-section { max-width: 880px; margin: 0 auto; padding: 80px 24px; }
-#hero { padding-top: 150px; padding-bottom: 60px; text-align: center; }
-.avatar-wrap { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 4px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+/* ===== CSS Variables ===== */
+:root {
+  --color-bg:        #f9fafb;
+  --color-surface:   #ffffff;
+  --color-surface-alt: #f1f5f9;
+  --color-text:      #334155;
+  --color-text-dim:  #64748b;
+  --color-text-muted:#94a3b8;
+  --color-heading:   #0f172a;
+  --color-border:    #e2e8f0;
+  --color-border-light: #f1f5f9;
+
+  --accent:          #4f46e5;
+  --accent-light:    #6366f1;
+  --accent-bg:       #eef2ff;
+  --accent-bg-hover: #e0e7ff;
+  --accent-dark:     #4338ca;
+
+  --warm:            #d97706;
+  --warm-bg:         #fffbeb;
+  --warn-border:     #fde68a;
+
+  --green:           #059669;
+  --green-bg:        #ecfdf5;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.03);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.08);
+
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --max-width: 920px;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.75;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Navigation ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid rgba(226,232,240,0.6);
+  transition: box-shadow var(--transition-base);
+}
+nav.scrolled { box-shadow: var(--shadow-md); }
+nav .nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+}
+nav .nav-brand {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-heading);
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+nav .nav-brand span { color: var(--accent); }
+nav ul {
+  display: flex; list-style: none; gap: 4px; flex-wrap: wrap; justify-content: flex-end;
+}
+nav a {
+  display: inline-block; text-decoration: none;
+  color: var(--color-text-dim); font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+  letter-spacing: 0.3px;
+}
+nav a:hover { color: var(--accent); background: var(--accent-bg); }
+nav a.nav-active { color: var(--accent); background: var(--accent-bg); font-weight: 600; }
+
+/* ===== Section Base ===== */
+section { max-width: var(--max-width); margin: 0 auto; padding: 80px 24px; }
+section:nth-child(even) { background: transparent; }
+
+/* ===== Hero ===== */
+#hero {
+  padding-top: 140px; padding-bottom: 80px; text-align: center;
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, #eef2ff 0%, #f9fafb 40%, #f9fafb 100%);
+}
+#hero::before {
+  content: '';
+  position: absolute; top: -180px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+#hero::after {
+  content: '';
+  position: absolute; bottom: -60px; right: -120px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(99,102,241,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.avatar-wrap {
+  width: 130px; height: 130px; border-radius: 50%; overflow: hidden;
+  margin: 0 auto 24px; position: relative; z-index: 2;
+  box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--accent-light), 0 8px 30px rgba(79,70,229,0.18);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+}
+.avatar-wrap:hover { transform: scale(1.04); box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--accent), 0 12px 36px rgba(79,70,229,0.25); }
 .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-#hero h1 { font-size: 44px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: 1px; }
-#hero .tagline { font-size: 17px; color: #64748b; margin-bottom: 20px; }
-#hero .contact-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; font-size: 13px; color: #94a3b8; }
-#hero .contact-row span { display: flex; align-items: center; gap: 5px; }
-.section-title { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 36px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; position: relative; }
-.section-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 44px; height: 2px; background: #2563eb; }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
-.info-item { background: #fff; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; }
-.info-item .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; }
-.info-item .value { font-size: 15px; color: #1e293b; margin-top: 4px; font-weight: 600; }
-.timeline { position: relative; padding-left: 28px; }
-.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
-.timeline-item { position: relative; margin-bottom: 32px; }
-.timeline-item::before { content: ''; position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: #2563eb; border: 3px solid #fff; box-shadow: 0 0 0 2px #2563eb; }
-.timeline-item h3 { font-size: 17px; color: #0f172a; }
-.timeline-item .meta { font-size: 13px; color: #64748b; margin-bottom: 6px; }
-.timeline-item p { font-size: 14px; color: #475569; }
-.card { background: #fff; border-radius: 10px; padding: 22px; margin-bottom: 14px; border: 1px solid #e2e8f0; transition: box-shadow 0.2s; }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
-.card h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; }
-.card .badge { display: inline-block; background: #eff6ff; color: #2563eb; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; margin-bottom: 6px; font-weight: 500; }
-.card .badge-high { display: inline-block; background: #fef3c7; color: #92400e; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; font-weight: 500; }
-.skills-grid { display: flex; flex-wrap: wrap; gap: 14px; }
-.skill-cat { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; flex: 1; min-width: 240px; }
-.skill-cat h3 { font-size: 15px; color: #2563eb; margin-bottom: 12px; }
-.skill-cat .tag { display: inline-block; background: #f1f5f9; color: #475569; font-size: 12px; padding: 5px 12px; border-radius: 6px; margin: 3px; }
-.honor-list { list-style: none; }
-.honor-list li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #475569; display: flex; align-items: center; gap: 8px; }
-.honor-list li .icon { font-size: 16px; }
-.cert-gallery { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-.cert-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; text-align: center; width: 340px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+#hero h1 {
+  font-size: 46px; font-weight: 800; color: var(--color-heading);
+  margin-bottom: 8px; letter-spacing: 1px; position: relative; z-index: 2;
+}
+#hero .tagline {
+  font-size: 17px; color: var(--color-text-dim); margin-bottom: 24px;
+  font-weight: 400; position: relative; z-index: 2;
+}
+#hero .contact-row {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  position: relative; z-index: 2;
+}
+#hero .contact-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--color-text-dim);
+  background: var(--color-surface);
+  padding: 8px 16px; border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+#hero .contact-pill:hover {
+  border-color: var(--accent-light);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+#hero .contact-icon { font-size: 15px; }
+
+/* ===== Section Titles ===== */
+.section-title {
+  font-size: 22px; font-weight: 700; color: var(--color-heading);
+  margin-bottom: 32px; display: flex; align-items: center; gap: 12px;
+  letter-spacing: 0.3px;
+}
+.section-title::before {
+  content: '';
+  display: block; width: 4px; height: 24px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent-light), var(--accent-dark));
+  flex-shrink: 0;
+}
+
+/* ===== About Grid ===== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.info-item {
+  background: var(--color-surface);
+  padding: 18px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-fast);
+}
+.info-item:hover {
+  border-color: var(--accent-light);
+  box-shadow: var(--shadow-sm);
+}
+.info-item .label {
+  font-size: 11px; color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+  margin-bottom: 4px;
+}
+.info-item .value {
+  font-size: 15px; color: var(--color-heading); font-weight: 600;
+}
+
+/* ===== Timeline ===== */
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px;
+  width: 2px; background: linear-gradient(180deg, var(--accent-light), var(--color-border), var(--color-border));
+  border-radius: 1px;
+}
+.timeline-item {
+  position: relative; margin-bottom: 36px; padding-bottom: 4px;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -28px; top: 6px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--color-surface);
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-bg);
+  transition: all var(--transition-fast);
+}
+.timeline-item:hover::before {
+  border-color: var(--accent-dark);
+  box-shadow: 0 0 0 6px var(--accent-bg-hover);
+}
+.timeline-item h3 { font-size: 17px; color: var(--color-heading); font-weight: 700; margin-bottom: 4px; }
+.timeline-item .meta {
+  font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 8px;
+  display: inline-block; background: var(--accent-bg); padding: 2px 10px; border-radius: var(--radius-full);
+}
+.timeline-item p { font-size: 14px; color: var(--color-text); line-height: 1.8; }
+
+/* ===== Cards ===== */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 14px;
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+  opacity: 0; transition: opacity var(--transition-base);
+}
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--color-border);
+}
+.card:hover::before { opacity: 1; }
+.card h3 { font-size: 16px; color: var(--color-heading); margin-bottom: 10px; font-weight: 700; line-height: 1.5; }
+.card .meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; align-items: center; }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 11px; padding: 3px 10px; border-radius: var(--radius-full);
+  font-weight: 600; letter-spacing: 0.3px;
+  transition: all var(--transition-fast);
+}
+.badge-journal-high {
+  background: var(--warm-bg); color: var(--warm);
+  border: 1px solid var(--warn-border);
+}
+.badge-journal-mid {
+  background: var(--accent-bg); color: var(--accent);
+  border: 1px solid #c7d2fe;
+}
+.badge-journal {
+  background: #f8fafc; color: #475569;
+  border: 1px solid var(--color-border);
+}
+.badge-author {
+  background: var(--green-bg); color: var(--green);
+  border: 1px solid #a7f3d0;
+}
+.badge-tag {
+  background: var(--color-surface-alt); color: var(--color-text-dim);
+  border: 1px solid var(--color-border-light);
+}
+.card p { font-size: 14px; color: var(--color-text); line-height: 1.85; margin-top: 4px; }
+
+/* ===== Highlight Box ===== */
+.highlight-box {
+  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+  border-radius: var(--radius-lg); padding: 28px;
+  border: 1px solid #c7d2fe;
+  transition: box-shadow var(--transition-base);
+}
+.highlight-box:hover { box-shadow: var(--shadow-md); }
+.highlight-box h3 { color: var(--accent-dark); margin-bottom: 6px; font-size: 18px; }
+.highlight-box .meta { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 8px; }
+.highlight-box p { font-size: 14px; line-height: 1.85; color: var(--color-text); }
+
+/* ===== Certificates ===== */
+.cert-gallery { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+.cert-card {
+  background: var(--color-surface); border-radius: var(--radius-lg);
+  overflow: hidden; border: 1px solid var(--color-border-light);
+  text-align: center; width: 320px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+.cert-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
 .cert-card img { width: 100%; display: block; }
-.cert-card .caption { padding: 12px; font-size: 14px; color: #475569; font-weight: 500; }
-footer { text-align: center; padding: 50px 24px; color: #94a3b8; font-size: 13px; }
-footer .sig { margin-top: 12px; }
-footer .sig img { height: 36px; opacity: 0.6; }
-.highlight-box { background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #bfdbfe; }
-.highlight-box h3 { color: #1e40af; margin-bottom: 6px; }
-@media (max-width: 640px) {
-  #hero h1 { font-size: 32px; }
-  .info-grid { grid-template-columns: 1fr 1fr; }
-  .skills-grid { flex-direction: column; }
+.cert-card .caption {
+  padding: 14px 16px; font-size: 14px; color: var(--color-heading);
+  font-weight: 600; background: var(--color-surface-alt);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ===== Skills Grid ===== */
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.skill-cat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg); padding: 24px;
+  transition: all var(--transition-base);
+}
+.skill-cat:hover { box-shadow: var(--shadow-md); border-color: var(--color-border); }
+.skill-cat .cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.skill-cat .cat-icon {
+  width: 38px; height: 38px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.skill-cat:nth-child(1) .cat-icon { background: #eef2ff; color: #4f46e5; }
+.skill-cat:nth-child(2) .cat-icon { background: #ecfdf5; color: #059669; }
+.skill-cat:nth-child(3) .cat-icon { background: #fffbeb; color: #d97706; }
+.skill-cat h3 { font-size: 15px; color: var(--color-heading); font-weight: 700; }
+.skill-cat .tag {
+  display: inline-block; background: var(--color-surface-alt);
+  color: var(--color-text); font-size: 12px; padding: 5px 12px;
+  border-radius: var(--radius-sm); margin: 3px;
+  font-weight: 500; transition: all var(--transition-fast);
+}
+.skill-cat .tag:hover { background: #e2e8f0; color: var(--color-heading); }
+
+/* ===== Honor List ===== */
+.honor-list { list-style: none; }
+.honor-list li {
+  padding: 14px 0; border-bottom: 1px solid var(--color-border-light);
+  font-size: 14px; color: var(--color-text);
+  display: flex; align-items: center; gap: 12px;
+  transition: all var(--transition-fast);
+}
+.honor-list li:hover { color: var(--color-heading); padding-left: 4px; }
+.honor-list li:last-child { border-bottom: none; }
+.honor-list li .honor-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  background: var(--accent-bg); color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center; padding: 56px 24px;
+  background: var(--color-surface-alt);
+  border-top: 1px solid var(--color-border-light);
+}
+footer .footer-brand {
+  font-size: 18px; font-weight: 700; color: var(--color-heading);
+  margin-bottom: 6px; letter-spacing: 0.5px;
+}
+footer .footer-sub {
+  font-size: 13px; color: var(--color-text-muted); margin-bottom: 16px;
+}
+footer .sig img { height: 30px; opacity: 0.45; transition: opacity var(--transition-fast); }
+footer .sig img:hover { opacity: 0.7; }
+footer .footer-divider {
+  width: 40px; height: 2px; background: var(--accent-light);
+  margin: 20px auto; border-radius: 1px; opacity: 0.5;
+}
+
+/* ===== Self-evaluation Card ===== */
+.self-eval-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg); padding: 24px;
+  border: 1px solid var(--color-border-light);
+  margin-top: 24px;
+}
+.self-eval-card h3 { font-size: 16px; color: var(--color-heading); margin-bottom: 12px; font-weight: 700; }
+.self-eval-card p { font-size: 14px; color: var(--color-text); line-height: 1.9; }
+
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+  nav .nav-inner { padding: 0 16px; }
+  nav ul { gap: 0; }
+  nav a { padding: 5px 10px; font-size: 12px; }
+  #hero { padding-top: 120px; padding-bottom: 60px; }
+  #hero h1 { font-size: 34px; }
+  #hero .tagline { font-size: 15px; }
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-grid { grid-template-columns: 1fr; }
   .cert-card { width: 100%; }
+  section { padding: 56px 16px; }
+  .section-title { font-size: 20px; }
+  .card { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  #hero h1 { font-size: 28px; }
+  #hero { padding-top: 110px; padding-bottom: 48px; }
+  .avatar-wrap { width: 100px; height: 100px; }
+  .info-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .info-item { padding: 14px 12px; }
+  .info-item .value { font-size: 14px; }
+  .section-title { font-size: 18px; }
+  .card h3 { font-size: 15px; }
+  .timeline { padding-left: 24px; }
+  .timeline-item::before { left: -20px; width: 12px; height: 12px; }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <ul>
-    <li><a href="#about">关于我</a></li>
-    <li><a href="#education">教育</a></li>
-    <li><a href="#certs">证书</a></li>
-    <li><a href="#work">工作</a></li>
-    <li><a href="#research">科研项目</a></li>
-    <li><a href="#papers">论文</a></li>
-    <li><a href="#skills">技能</a></li>
-    <li><a href="#honors">荣誉</a></li>
-  </ul>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-brand">庆<span>达</span></a>
+    <ul>
+      <li><a href="#about">关于我</a></li>
+      <li><a href="#education">教育</a></li>
+      <li><a href="#certs">证书</a></li>
+      <li><a href="#work">工作</a></li>
+      <li><a href="#research">科研项目</a></li>
+      <li><a href="#papers">论文</a></li>
+      <li><a href="#skills">技能</a></li>
+      <li><a href="#honors">荣誉</a></li>
+    </ul>
+  </div>
 </nav>
 
 <section id="hero">
   <div class="avatar-wrap"><img src="avatar.png" alt="庆达"></div>
   <h1>庆达</h1>
-  <p class="tagline">材料科学与工程 工学硕士 | 新能源材料研发工程师</p>
+  <p class="tagline">材料科学与工程 工学硕士&ensp;·&ensp;新能源材料研发工程师</p>
   <div class="contact-row">
-    <span>📧 2371267598@qq.com</span>
-    <span>📱 14747224629</span>
-    <span>📍 内蒙古 · 包头</span>
+    <a class="contact-pill" href="mailto:2371267598@qq.com"><span class="contact-icon">&#9993;</span> 2371267598@qq.com</a>
+    <span class="contact-pill"><span class="contact-icon">&#9742;</span> 14747224629</span>
+    <span class="contact-pill"><span class="contact-icon">&#9906;</span> 内蒙古 · 包头</span>
   </div>
 </section>
 
@@ -108,12 +472,12 @@ footer .sig img { height: 36px; opacity: 0.6; }
   <div class="timeline">
     <div class="timeline-item">
       <h3>华北理工大学 — 材料科学与工程 工学硕士</h3>
-      <div class="meta">2021.09 - 2024.06</div>
+      <div class="meta">2021.09 – 2024.06</div>
       <p>主修：材料现代研究方法、结构化学、数理统计、计算方法、高分子材料物理与性能。研究方向为光电化学阴极保护，发表 SCI/EI/核心论文 6 篇，其中第一作者 4 篇。获一等、二等、三等学业奖学金。</p>
     </div>
     <div class="timeline-item">
       <h3>华北理工大学 — 材料化学 学士</h3>
-      <div class="meta">2017.09 - 2021.06</div>
+      <div class="meta">2017.09 – 2021.06</div>
       <p>主修：高分子材料、材料测试方法、材料科学基础、水泥工艺原理、耐火工艺原理、金属工艺原理、物理化学、有机化学、无机化学、高分子化学、材料工程基础、功能材料等。毕业论文：碱溶活化铁尾矿制备地聚合物的研究。</p>
     </div>
   </div>
@@ -137,69 +501,120 @@ footer .sig img { height: 36px; opacity: 0.6; }
   <h2 class="section-title">工作经历</h2>
   <div class="highlight-box">
     <h3>唐山国亮新能源研究院有限公司</h3>
-    <div class="meta" style="font-size:13px;color:#64748b;margin-top:4px;">2024年6月 — 至今 | 新能源材料研发</div>
-    <p style="margin-top:10px;font-size:14px;">从事无机非金属材料研发工作，涵盖硅树脂结合剂实验、匣钵材料研究、铁尾矿综合利用等方向。负责实验方案设计、数据采集分析（XRD、SEM、FT-IR等）、实验报告撰写及月度总结汇报，具备独立实验设计与数据分析能力。</p>
+    <div class="meta">2024年6月 — 至今 &nbsp;|&nbsp; 新能源材料研发</div>
+    <p>从事无机非金属材料研发工作，涵盖硅树脂结合剂实验、匣钵材料研究、铁尾矿综合利用等方向。负责实验方案设计、数据采集分析（XRD、SEM、FT-IR等）、实验报告撰写及月度总结汇报，具备独立实验设计与数据分析能力。</p>
   </div>
 </section>
 
 <section id="research">
   <h2 class="section-title">科研与项目经历</h2>
+
   <div class="card">
     <h3>钛酸锶光阳极设计制备及对金属腐蚀防护的研究</h3>
-    <span class="badge-high">河北省自然科学基金</span><span class="badge">硕士核心课题</span>
-    <p style="margin-top:8px;">参与导师主持的河北省自然科学基金高端钢铁冶金联合基金项目（1011101）。主要负责材料制备，探究催化剂和膜制备工艺对物化性能的影响。涉及 SrTiO₃/BaTiO₃ 复合薄膜的制备、氮梯度掺杂、ZIF-67 复合等方向，系统研究了光电流密度、开路电位、极化曲线等电化学性能。</p>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">河北省自然科学基金</span>
+      <span class="badge badge-tag">硕士核心课题</span>
+    </div>
+    <p>参与导师主持的河北省自然科学基金高端钢铁冶金联合基金项目（1011101）。主要负责材料制备，探究催化剂和膜制备工艺对物化性能的影响。涉及 SrTiO&#8323;/BaTiO&#8323; 复合薄膜的制备、氮梯度掺杂、ZIF-67 复合等方向，系统研究了光电流密度、开路电位、极化曲线等电化学性能。</p>
   </div>
+
   <div class="card">
     <h3>氮梯度掺杂钛酸锶复合钛酸钡光电化学阴极保护性能研究</h3>
-    <span class="badge">研究生课题</span>
-    <p style="margin-top:8px;">将 SrTiO₃ 催化剂负载到 FTO 玻璃上制备光阳极，与 304 不锈钢耦合保护其不被水氧化腐蚀。系统探究催化剂最佳合成工艺、前驱体喷涂参数（不同厚度/喷涂次数）对膜性能的影响，以及最佳负载方法。相关成果发表于 Ceramics International（SCI 一区）和复合材料学报（EI）。</p>
+    <div class="meta-row">
+      <span class="badge badge-tag">研究生课题</span>
+    </div>
+    <p>将 SrTiO&#8323; 催化剂负载到 FTO 玻璃上制备光阳极，与 304 不锈钢耦合保护其不被水氧化腐蚀。系统探究催化剂最佳合成工艺、前驱体喷涂参数（不同厚度/喷涂次数）对膜性能的影响，以及最佳负载方法。相关成果发表于 Ceramics International（SCI 一区）和复合材料学报（EI）。</p>
   </div>
+
   <div class="card">
     <h3>铁尾矿资源化利用研究</h3>
-    <span class="badge">本科论文 + 工作延续</span>
-    <p style="margin-top:8px;">本科阶段：碱溶活化铁尾矿制备地聚合物，探究不同浓度碱溶液对铁尾矿的碱溶作用，制备抗压抗折强度高的地聚合物砖体。工作阶段：参与铁尾矿制备 UHPC（超高性能混凝土）研究，以及低品位高铁矾土矿开采尾矿生产高铝电熔料技术研究项目。</p>
+    <div class="meta-row">
+      <span class="badge badge-tag">本科论文 + 工作延续</span>
+    </div>
+    <p>本科阶段：碱溶活化铁尾矿制备地聚合物，探究不同浓度碱溶液对铁尾矿的碱溶作用，制备抗压抗折强度高的地聚合物砖体。工作阶段：参与铁尾矿制备 UHPC（超高性能混凝土）研究，以及低品位高铁矾土矿开采尾矿生产高铝电熔料技术研究项目。</p>
   </div>
+
   <div class="card">
     <h3>油性降凝物质的制备及降凝性能研究</h3>
-    <span class="badge">校企合作项目</span>
-    <p style="margin-top:8px;">研究常温下通过添加降凝剂改善钢厂油泥流动性，系统研究降凝物质掺杂比例对油泥粘度的影响规律。</p>
+    <div class="meta-row">
+      <span class="badge badge-tag">校企合作项目</span>
+    </div>
+    <p>研究常温下通过添加降凝剂改善钢厂油泥流动性，系统研究降凝物质掺杂比例对油泥粘度的影响规律。</p>
   </div>
+
   <div class="card">
     <h3>硅树脂结合剂实验（工作项目）</h3>
-    <span class="badge">企业研发</span>
-    <p style="margin-top:8px;">在唐山国亮新能源研究院期间，负责硅树脂作为结合剂制备负极机压罐样条的实验研究，完成多批次实验数据采集与分析，撰写实验报告。</p>
+    <div class="meta-row">
+      <span class="badge badge-tag">企业研发</span>
+    </div>
+    <p>在唐山国亮新能源研究院期间，负责硅树脂作为结合剂制备负极机压罐样条的实验研究，完成多批次实验数据采集与分析，撰写实验报告。</p>
   </div>
 </section>
 
 <section id="papers">
   <h2 class="section-title">论文发表</h2>
+
   <div class="card">
-    <h3>BaTiO₃/SrTiO₃ 复合薄膜的制备及其光电化学阴极保护性能</h3>
-    <span class="badge-high">EI</span><span class="badge">复合材料学报</span><span class="badge">第一作者</span>
+    <h3>BaTiO&#8323;/SrTiO&#8323; 复合薄膜的制备及其光电化学阴极保护性能</h3>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">EI</span>
+      <span class="badge badge-journal-mid">复合材料学报</span>
+      <span class="badge badge-author">第一作者</span>
+    </div>
   </div>
+
   <div class="card">
-    <h3>Controlled synthesis of various SrTiO₃ morphology and their effects on photoelectrically cathodic protection performance</h3>
-    <span class="badge-high">SCI 一区</span><span class="badge">Ceramics International</span><span class="badge">第二作者</span>
+    <h3>Controlled synthesis of various SrTiO&#8323; morphology and their effects on photoelectrically cathodic protection performance</h3>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">SCI 一区</span>
+      <span class="badge badge-journal-mid">Ceramics International</span>
+      <span class="badge badge-author">第二作者</span>
+    </div>
   </div>
+
   <div class="card">
     <h3>金属有机框架材料的制备及应用研究进展</h3>
-    <span class="badge-high">北大核心 / CSCD</span><span class="badge">化工新型材料</span><span class="badge">第一作者</span>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">北大核心 / CSCD</span>
+      <span class="badge badge-journal-mid">化工新型材料</span>
+      <span class="badge badge-author">第一作者</span>
+    </div>
   </div>
+
   <div class="card">
     <h3>梯度掺杂半导体材料光催化研究进展</h3>
-    <span class="badge-high">北大核心 / CSCD</span><span class="badge">中国陶瓷</span><span class="badge">第一作者</span>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">北大核心 / CSCD</span>
+      <span class="badge badge-journal-mid">中国陶瓷</span>
+      <span class="badge badge-author">第一作者</span>
+    </div>
   </div>
+
   <div class="card">
     <h3>钛酸钡薄膜的制备及压电光催化应用研究进展</h3>
-    <span class="badge-high">北大核心 / CSCD</span><span class="badge">陶瓷学报</span><span class="badge">第一作者</span>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">北大核心 / CSCD</span>
+      <span class="badge badge-journal-mid">陶瓷学报</span>
+      <span class="badge badge-author">第一作者</span>
+    </div>
   </div>
+
   <div class="card">
-    <h3>Construction of Novel Type-II SrTiO₃/g-C₃N₄ Heterojunction Photocatalysts</h3>
-    <span class="badge">SCI 四区</span><span class="badge">Russian J. Phys. Chem. A</span><span class="badge">第二作者</span>
+    <h3>Construction of Novel Type-II SrTiO&#8323;/g-C&#8323;N&#8324; Heterojunction Photocatalysts</h3>
+    <div class="meta-row">
+      <span class="badge badge-journal-mid">SCI 四区</span>
+      <span class="badge badge-journal">Russian J. Phys. Chem. A</span>
+      <span class="badge badge-author">第二作者</span>
+    </div>
   </div>
+
   <div class="card">
-    <h3>Gradient N-doping SrTiO₃ photoanode with enhanced photoelectrochemical corrosion protection performance for 304 stainless steel</h3>
-    <span class="badge">SCI</span><span class="badge">Materials Research Bulletin (2025)</span><span class="badge">第二作者</span>
+    <h3>Gradient N-doping SrTiO&#8323; photoanode with enhanced photoelectrochemical corrosion protection performance for 304 stainless steel</h3>
+    <div class="meta-row">
+      <span class="badge badge-journal-high">SCI</span>
+      <span class="badge badge-journal">Materials Research Bulletin (2025)</span>
+      <span class="badge badge-author">第二作者</span>
+    </div>
   </div>
 </section>
 
@@ -207,15 +622,26 @@ footer .sig img { height: 36px; opacity: 0.6; }
   <h2 class="section-title">专业技能</h2>
   <div class="skills-grid">
     <div class="skill-cat">
-      <h3>材料分析表征</h3>
-      <span class="tag">XRD</span><span class="tag">FT-IR</span><span class="tag">SEM</span><span class="tag">EDS</span><span class="tag">UV-vis</span><span class="tag">PL</span><span class="tag">电化学测试</span><span class="tag">极化曲线</span><span class="tag">光电流测试</span>
+      <div class="cat-header">
+        <div class="cat-icon">&#9883;</div>
+        <h3>材料分析表征</h3>
+      </div>
+      <span class="tag">XRD</span><span class="tag">FT-IR</span><span class="tag">SEM</span><span class="tag">EDS</span><span class="tag">UV-vis</span>
+      <span class="tag">PL</span><span class="tag">电化学测试</span><span class="tag">极化曲线</span><span class="tag">光电流测试</span>
     </div>
     <div class="skill-cat">
-      <h3>软件工具</h3>
-      <span class="tag">Origin</span><span class="tag">Photoshop</span><span class="tag">Cinema 4D</span><span class="tag">Diamond</span><span class="tag">ChemDraw</span><span class="tag">OMINIC</span><span class="tag">Office</span><span class="tag">AutoCAD</span>
+      <div class="cat-header">
+        <div class="cat-icon">&#9000;</div>
+        <h3>软件工具</h3>
+      </div>
+      <span class="tag">Origin</span><span class="tag">Photoshop</span><span class="tag">Cinema 4D</span><span class="tag">Diamond</span>
+      <span class="tag">ChemDraw</span><span class="tag">OMINIC</span><span class="tag">Office</span><span class="tag">AutoCAD</span>
     </div>
     <div class="skill-cat">
-      <h3>证书资质</h3>
+      <div class="cat-header">
+        <div class="cat-icon">&#9733;</div>
+        <h3>证书资质</h3>
+      </div>
       <span class="tag">全国计算机二级</span><span class="tag">英语四级 CET-4</span><span class="tag">普通话二级乙等</span><span class="tag">工学硕士学位</span>
     </div>
   </div>
@@ -224,21 +650,46 @@ footer .sig img { height: 36px; opacity: 0.6; }
 <section id="honors">
   <h2 class="section-title">荣誉与评价</h2>
   <ul class="honor-list">
-    <li><span class="icon">🏅</span> 一等学业奖学金、二等学业奖学金、三等学业奖学金</li>
-    <li><span class="icon">🏅</span> 2017-2020 连续三年"社会实践先进个人"</li>
-    <li><span class="icon">🏅</span> 2024年度高质量发展先进企业优秀个人评选（申报）</li>
+    <li><span class="honor-icon">&#127942;</span> 一等学业奖学金、二等学业奖学金、三等学业奖学金</li>
+    <li><span class="honor-icon">&#127942;</span> 2017-2020 连续三年"社会实践先进个人"</li>
+    <li><span class="honor-icon">&#127942;</span> 2024年度高质量发展先进企业优秀个人评选（申报）</li>
   </ul>
-  <div class="card" style="margin-top:24px;">
+  <div class="self-eval-card">
     <h3>自我评价</h3>
     <p>具有扎实的材料科学与工程专业知识，硕士期间以第一作者发表 EI/核心论文 4 篇，参与省自然科学基金项目，具备独立实验设计与数据分析能力。工作后在企业研发岗位积累了无机非金属材料实践经验，涵盖硅树脂、匣钵、铁尾矿等多个方向。善于学习新软件和技能，乐于接纳新事物，具有较强的逻辑思维能力和团队协作能力。性格沉稳冷静，能适应各种工作环境，有较强的抗压能力。</p>
   </div>
 </section>
 
 <footer>
-  <p>庆达 · 材料科学与工程 工学硕士 · 新能源材料研发</p>
-  <p style="margin-top:4px;font-size:12px;">华北理工大学 | 唐山国亮新能源研究院有限公司</p>
+  <div class="footer-brand">庆达</div>
+  <p class="footer-sub">材料科学与工程 工学硕士&ensp;·&ensp;新能源材料研发</p>
+  <div class="footer-divider"></div>
+  <p style="font-size:12px;color:var(--color-text-muted);">华北理工大学 &nbsp;|&nbsp; 唐山国亮新能源研究院有限公司</p>
   <div class="sig"><img src="signature_1.png" alt="签名"></div>
 </footer>
+
+<script>
+(function() {
+  var nav = document.getElementById('navbar');
+  var links = nav.querySelectorAll('a[href^="#"]');
+  var sections = [];
+  links.forEach(function(a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, link: a });
+  });
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY + 100;
+    if (y > 40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+    var current = sections[0];
+    sections.forEach(function(s) {
+      if (s.el.offsetTop <= y) current = s;
+    });
+    links.forEach(function(a) { a.classList.remove('nav-active'); });
+    if (current) current.link.classList.add('nav-active');
+  });
+})();
+</script>
 
 </body>
 </html>
