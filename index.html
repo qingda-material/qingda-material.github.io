@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>庆达 - 个人主页</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #f8f9fa; color: #334155; line-height: 1.85; }
+nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+nav ul { display: flex; justify-content: center; list-style: none; padding: 16px 0; flex-wrap: wrap; }
+nav li { margin: 0 16px; }
+nav a { text-decoration: none; color: #64748b; font-size: 13px; font-weight: 500; transition: color 0.3s; letter-spacing: 0.5px; }
+nav a:hover { color: #2563eb; }
+section { max-width: 880px; margin: 0 auto; padding: 80px 24px; }
+#hero { padding-top: 150px; padding-bottom: 60px; text-align: center; }
+#hero h1 { font-size: 44px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: 1px; }
+#hero .tagline { font-size: 17px; color: #64748b; margin-bottom: 20px; }
+#hero .contact-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; font-size: 13px; color: #94a3b8; }
+#hero .contact-row span { display: flex; align-items: center; gap: 5px; }
+.section-title { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 36px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; position: relative; }
+.section-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 44px; height: 2px; background: #2563eb; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.info-item { background: #fff; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; }
+.info-item .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; }
+.info-item .value { font-size: 15px; color: #1e293b; margin-top: 4px; font-weight: 600; }
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+.timeline-item { position: relative; margin-bottom: 32px; }
+.timeline-item::before { content: ''; position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: #2563eb; border: 3px solid #fff; box-shadow: 0 0 0 2px #2563eb; }
+.timeline-item h3 { font-size: 17px; color: #0f172a; }
+.timeline-item .meta { font-size: 13px; color: #64748b; margin-bottom: 6px; }
+.timeline-item p { font-size: 14px; color: #475569; }
+.card { background: #fff; border-radius: 10px; padding: 22px; margin-bottom: 14px; border: 1px solid #e2e8f0; transition: box-shadow 0.2s; }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+.card h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; }
+.card .badge { display: inline-block; background: #eff6ff; color: #2563eb; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; margin-bottom: 6px; font-weight: 500; }
+.card .badge-high { display: inline-block; background: #fef3c7; color: #92400e; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; font-weight: 500; }
+.skills-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.skill-cat { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; flex: 1; min-width: 240px; }
+.skill-cat h3 { font-size: 15px; color: #2563eb; margin-bottom: 12px; }
+.skill-cat .tag { display: inline-block; background: #f1f5f9; color: #475569; font-size: 12px; padding: 5px 12px; border-radius: 6px; margin: 3px; }
+.honor-list { list-style: none; }
+.honor-list li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #475569; display: flex; align-items: center; gap: 8px; }
+.honor-list li .icon { font-size: 16px; }
+.cert-gallery { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.cert-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; text-align: center; width: 340px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+.cert-card img { width: 100%; display: block; }
+.cert-card .caption { padding: 12px; font-size: 14px; color: #475569; font-weight: 500; }
+footer { text-align: center; padding: 50px 24px; color: #94a3b8; font-size: 13px; }
+footer .sig { margin-top: 12px; }
+footer .sig img { height: 36px; opacity: 0.6; }
+.highlight-box { background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #bfdbfe; }
+.highlight-box h3 { color: #1e40af; margin-bottom: 6px; }
+@media (max-width: 640px) {
+  #hero h1 { font-size: 32px; }
+  .info-grid { grid-template-columns: 1fr 1fr; }
+  .skills-grid { flex-direction: column; }
+  .cert-card { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#about">关于我</a></li>
+    <li><a href="#education">教育</a></li>
+    <li><a href="#certs">证书</a></li>
+    <li><a href="#work">工作</a></li>
+    <li><a href="#research">科研项目</a></li>
+    <li><a href="#papers">论文</a></li>
+    <li><a href="#skills">技能</a></li>
+    <li><a href="#honors">荣誉</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <h1>庆达</h1>
+  <p class="tagline">材料科学与工程 工学硕士 | 新能源材料研发工程师</p>
+  <div class="contact-row">
+    <span>📧 2371267598@qq.com</span>
+    <span>📱 14747224629</span>
+    <span>📍 内蒙古 · 包头</span>
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">关于我</h2>
+  <div class="info-grid">
+    <div class="info-item"><div class="label">姓名</div><div class="value">庆达</div></div>
+    <div class="info-item"><div class="label">民族</div><div class="value">蒙古族</div></div>
+    <div class="info-item"><div class="label">出生年月</div><div class="value">1999年3月</div></div>
+    <div class="info-item"><div class="label">籍贯</div><div class="value">内蒙古包头市</div></div>
+    <div class="info-item"><div class="label">学历</div><div class="value">工学硕士</div></div>
+    <div class="info-item"><div class="label">毕业院校</div><div class="value">华北理工大学</div></div>
+    <div class="info-item"><div class="label">专业</div><div class="value">材料科学与工程</div></div>
+    <div class="info-item"><div class="label">现职单位</div><div class="value">唐山国亮新能源研究院</div></div>
+  </div>
+</section>
+
+<section id="education">
+  <h2 class="section-title">教育经历</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h3>华北理工大学 — 材料科学与工程 工学硕士</h3>
+      <div class="meta">2021.09 - 2024.06</div>
+      <p>主修：材料现代研究方法、结构化学、数理统计、计算方法、高分子材料物理与性能。研究方向为光电化学阴极保护，发表 SCI/EI/核心论文 6 篇，其中第一作者 4 篇。获一等、二等、三等学业奖学金。</p>
+    </div>
+    <div class="timeline-item">
+      <h3>华北理工大学 — 材料化学 学士</h3>
+      <div class="meta">2017.09 - 2021.06</div>
+      <p>主修：高分子材料、材料测试方法、材料科学基础、水泥工艺原理、耐火工艺原理、金属工艺原理、物理化学、有机化学、无机化学、高分子化学、材料工程基础、功能材料等。毕业论文：碱溶活化铁尾矿制备地聚合物的研究。</p>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <h2 class="section-title">学历证书</h2>
+  <div class="cert-gallery">
+    <div class="cert-card">
+      <img src="degree_cert.jpg" alt="硕士学位证书">
+      <div class="caption">工学硕士学位证书</div>
+    </div>
+    <div class="cert-card">
+      <img src="diploma_cert.jpg" alt="硕士毕业证书">
+      <div class="caption">硕士毕业证书</div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <h2 class="section-title">工作经历</h2>
+  <div class="highlight-box">
+    <h3>唐山国亮新能源研究院有限公司</h3>
+    <div class="meta" style="font-size:13px;color:#64748b;margin-top:4px;">2024年6月 — 至今 | 新能源材料研发</div>
+    <p style="margin-top:10px;font-size:14px;">从事无机非金属材料研发工作，涵盖硅树脂结合剂实验、匣钵材料研究、铁尾矿综合利用等方向。负责实验方案设计、数据采集分析（XRD、SEM、FT-IR等）、实验报告撰写及月度总结汇报，具备独立实验设计与数据分析能力。</p>
+  </div>
+</section>
+
+<section id="research">
+  <h2 class="section-title">科研与项目经历</h2>
+  <div class="card">
+    <h3>钛酸锶光阳极设计制备及对金属腐蚀防护的研究</h3>
+    <span class="badge-high">河北省自然科学基金</span><span class="badge">硕士核心课题</span>
+    <p style="margin-top:8px;">参与导师主持的河北省自然科学基金高端钢铁冶金联合基金项目（1011101）。主要负责材料制备，探究催化剂和膜制备工艺对物化性能的影响。涉及 SrTiO₃/BaTiO₃ 复合薄膜的制备、氮梯度掺杂、ZIF-67 复合等方向，系统研究了光电流密度、开路电位、极化曲线等电化学性能。</p>
+  </div>
+  <div class="card">
+    <h3>氮梯度掺杂钛酸锶复合钛酸钡光电化学阴极保护性能研究</h3>
+    <span class="badge">研究生课题</span>
+    <p style="margin-top:8px;">将 SrTiO₃ 催化剂负载到 FTO 玻璃上制备光阳极，与 304 不锈钢耦合保护其不被水氧化腐蚀。系统探究催化剂最佳合成工艺、前驱体喷涂参数（不同厚度/喷涂次数）对膜性能的影响，以及最佳负载方法。相关成果发表于 Ceramics International（SCI 一区）和复合材料学报（EI）。</p>
+  </div>
+  <div class="card">
+    <h3>铁尾矿资源化利用研究</h3>
+    <span class="badge">本科论文 + 工作延续</span>
+    <p style="margin-top:8px;">本科阶段：碱溶活化铁尾矿制备地聚合物，探究不同浓度碱溶液对铁尾矿的碱溶作用，制备抗压抗折强度高的地聚合物砖体。工作阶段：参与铁尾矿制备 UHPC（超高性能混凝土）研究，以及低品位高铁矾土矿开采尾矿生产高铝电熔料技术研究项目。</p>
+  </div>
+  <div class="card">
+    <h3>油性降凝物质的制备及降凝性能研究</h3>
+    <span class="badge">校企合作项目</span>
+    <p style="margin-top:8px;">研究常温下通过添加降凝剂改善钢厂油泥流动性，系统研究降凝物质掺杂比例对油泥粘度的影响规律。</p>
+  </div>
+  <div class="card">
+    <h3>硅树脂结合剂实验（工作项目）</h3>
+    <span class="badge">企业研发</span>
+    <p style="margin-top:8px;">在唐山国亮新能源研究院期间，负责硅树脂作为结合剂制备负极机压罐样条的实验研究，完成多批次实验数据采集与分析，撰写实验报告。</p>
+  </div>
+</section>
+
+<section id="papers">
+  <h2 class="section-title">论文发表</h2>
+  <div class="card">
+    <h3>BaTiO₃/SrTiO₃ 复合薄膜的制备及其光电化学阴极保护性能</h3>
+    <span class="badge-high">EI</span><span class="badge">复合材料学报</span><span class="badge">第一作者</span>
+  </div>
+  <div class="card">
+    <h3>Controlled synthesis of various SrTiO₃ morphology and their effects on photoelectrically cathodic protection performance</h3>
+    <span class="badge-high">SCI 一区</span><span class="badge">Ceramics International</span><span class="badge">第二作者</span>
+  </div>
+  <div class="card">
+    <h3>金属有机框架材料的制备及应用研究进展</h3>
+    <span class="badge-high">北大核心 / CSCD</span><span class="badge">化工新型材料</span><span class="badge">第一作者</span>
+  </div>
+  <div class="card">
+    <h3>梯度掺杂半导体材料光催化研究进展</h3>
+    <span class="badge-high">北大核心 / CSCD</span><span class="badge">中国陶瓷</span><span class="badge">第一作者</span>
+  </div>
+  <div class="card">
+    <h3>钛酸钡薄膜的制备及压电光催化应用研究进展</h3>
+    <span class="badge-high">北大核心 / CSCD</span><span class="badge">陶瓷学报</span><span class="badge">第一作者</span>
+  </div>
+  <div class="card">
+    <h3>Construction of Novel Type-II SrTiO₃/g-C₃N₄ Heterojunction Photocatalysts</h3>
+    <span class="badge">SCI 四区</span><span class="badge">Russian J. Phys. Chem. A</span><span class="badge">第二作者</span>
+  </div>
+  <div class="card">
+    <h3>Gradient N-doping SrTiO₃ photoanode with enhanced photoelectrochemical corrosion protection performance for 304 stainless steel</h3>
+    <span class="badge">SCI</span><span class="badge">Materials Research Bulletin (2025)</span><span class="badge">第二作者</span>
+  </div>
+</section>
+
+<section id="skills">
+  <h2 class="section-title">专业技能</h2>
+  <div class="skills-grid">
+    <div class="skill-cat">
+      <h3>材料分析表征</h3>
+      <span class="tag">XRD</span><span class="tag">FT-IR</span><span class="tag">SEM</span><span class="tag">EDS</span><span class="tag">UV-vis</span><span class="tag">PL</span><span class="tag">电化学测试</span><span class="tag">极化曲线</span><span class="tag">光电流测试</span>
+    </div>
+    <div class="skill-cat">
+      <h3>软件工具</h3>
+      <span class="tag">Origin</span><span class="tag">Photoshop</span><span class="tag">Cinema 4D</span><span class="tag">Diamond</span><span class="tag">ChemDraw</span><span class="tag">OMINIC</span><span class="tag">Office</span><span class="tag">AutoCAD</span>
+    </div>
+    <div class="skill-cat">
+      <h3>证书资质</h3>
+      <span class="tag">全国计算机二级</span><span class="tag">英语四级 CET-4</span><span class="tag">普通话二级乙等</span><span class="tag">工学硕士学位</span>
+    </div>
+  </div>
+</section>
+
+<section id="honors">
+  <h2 class="section-title">荣誉与评价</h2>
+  <ul class="honor-list">
+    <li><span class="icon">🏅</span> 一等学业奖学金、二等学业奖学金、三等学业奖学金</li>
+    <li><span class="icon">🏅</span> 2017-2020 连续三年"社会实践先进个人"</li>
+    <li><span class="icon">🏅</span> 2024年度高质量发展先进企业优秀个人评选（申报）</li>
+  </ul>
+  <div class="card" style="margin-top:24px;">
+    <h3>自我评价</h3>
+    <p>具有扎实的材料科学与工程专业知识，硕士期间以第一作者发表 EI/核心论文 4 篇，参与省自然科学基金项目，具备独立实验设计与数据分析能力。工作后在企业研发岗位积累了无机非金属材料实践经验，涵盖硅树脂、匣钵、铁尾矿等多个方向。善于学习新软件和技能，乐于接纳新事物，具有较强的逻辑思维能力和团队协作能力。性格沉稳冷静，能适应各种工作环境，有较强的抗压能力。</p>
+  </div>
+</section>
+
+<footer>
+  <p>庆达 · 材料科学与工程 工学硕士 · 新能源材料研发</p>
+  <p style="margin-top:4px;font-size:12px;">华北理工大学 | 唐山国亮新能源研究院有限公司</p>
+  <div class="sig"><img src="signature_1.png" alt="签名"></div>
+</footer>
+
+</body>
+</html>
