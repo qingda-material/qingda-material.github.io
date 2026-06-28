@@ -15,6 +15,8 @@ nav a { text-decoration: none; color: #64748b; font-size: 13px; font-weight: 500
 nav a:hover { color: #2563eb; }
 section { max-width: 880px; margin: 0 auto; padding: 80px 24px; }
 #hero { padding-top: 150px; padding-bottom: 60px; text-align: center; }
+.avatar-wrap { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 4px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 #hero h1 { font-size: 44px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: 1px; }
 #hero .tagline { font-size: 17px; color: #64748b; margin-bottom: 20px; }
 #hero .contact-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; font-size: 13px; color: #94a3b8; }
@@ -77,6 +79,7 @@ footer .sig img { height: 36px; opacity: 0.6; }
 </nav>
 
 <section id="hero">
+  <div class="avatar-wrap"><img src="avatar.png" alt="庆达"></div>
   <h1>庆达</h1>
   <p class="tagline">材料科学与工程 工学硕士 | 新能源材料研发工程师</p>
   <div class="contact-row">
